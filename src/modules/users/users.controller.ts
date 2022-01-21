@@ -1,8 +1,10 @@
-import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
-import { get } from 'http';
-import { DoesUserExist } from 'src/core/guards/does-user-exist.guard';
-import { IfEmailIsOk } from 'src/core/guards/if-email-is-ok.guard';
-import { CreateUserDto } from './dto/create-user.dto';
+import { Body, Controller, Delete, Get, Param, Put, Request, UseGuards } from '@nestjs/common';
+import { request } from 'http';
+import { DeleteResult } from 'typeorm';
+import { JwtGuard } from '../auth/jwt.guard';
+import { UpdateUserDto } from './dto/update-user.dto';
+import { UserEntity } from './users.entity';
+
 import { UsersService } from './users.service';
 
 @Controller('users')
@@ -18,6 +20,21 @@ export class UsersController {
     findByEmail(@Param("email") email: string) {
         return this.userService.findByEmail(email);
     }
+
+
+    @Put()
+    @UseGuards(JwtGuard)
+    async updateUser(@Request() req, @Body() userData: UpdateUserDto): Promise<UserEntity> {
+        return this.userService.update(req.user.id, userData);
+    }
+
+    @Delete()
+    @UseGuards(JwtGuard)
+    async deleteUser(@Request() req): Promise<DeleteResult> {
+        return this.userService.delete(req.user.id);
+    }
+
+
 
 
 }

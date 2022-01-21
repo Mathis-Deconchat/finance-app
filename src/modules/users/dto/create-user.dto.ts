@@ -12,5 +12,7 @@ export class CreateUserDto {
 
     readonly username: string;
 
+    readonly bio: string;
+
 
 }
