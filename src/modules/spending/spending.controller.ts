@@ -1,15 +1,18 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Request, UseGuards } from '@nestjs/common';
 import { SpendingService } from './spending.service';
 import { CreateSpendingDto } from './dto/create-spending.dto';
 import { UpdateSpendingDto } from './dto/update-spending.dto';
+import { AuthGuard } from '@nestjs/passport';
+import { JwtGuard } from '../auth/jwt.guard';
 
 @Controller('spending')
 export class SpendingController {
-  constructor(private readonly spendingService: SpendingService) {}
+  constructor(private readonly spendingService: SpendingService) { }
 
+  @UseGuards(JwtGuard)
   @Post()
-  create(@Body() createSpendingDto: CreateSpendingDto) {
-    return this.spendingService.create(createSpendingDto);
+  async create(@Request() req, @Body() createSpendingDto: CreateSpendingDto) {
+    return this.spendingService.create(req.user.id, createSpendingDto);
   }
 
   @Get()
@@ -17,14 +20,14 @@ export class SpendingController {
     return this.spendingService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.spendingService.findOne(+id);
+  @Get(':slug')
+  findOne(@Param('slug') slug: string) {
+    return this.spendingService.findOne({ slug });
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateSpendingDto: UpdateSpendingDto) {
-    return this.spendingService.update(+id, updateSpendingDto);
+  @Patch(':slug')
+  update(@Param('slug') slug: string, @Body() updateSpendingDto: UpdateSpendingDto) {
+    return this.spendingService.update(slug, updateSpendingDto);
   }
 
   @Delete(':id')

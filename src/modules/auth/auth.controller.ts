@@ -1,7 +1,7 @@
 import { Body, Controller, Logger, Post, Request, UseGuards, Get, Put } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { DoesUserExist } from 'src/core/guards/does-user-exist.guard';
-import { IfEmailIsOk } from 'src/core/guards/if-email-is-ok.guard';
+import { DoesUserExist } from '../../core/guards/does-user-exist.guard';
+import { IfEmailIsOk } from '../../core/guards/if-email-is-ok.guard';
 import { CreateUserDto } from '../users/dto/create-user.dto';
 import { UpdateUserDto } from '../users/dto/update-user.dto';
 import { UserEntity } from '../users/users.entity';

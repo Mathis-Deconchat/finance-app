@@ -1,14 +1,23 @@
 import { IsNotEmpty } from "class-validator";
 import { BeforeUpdate, Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { UserEntity } from "../../users/users.entity";
-@Entity()
+
+@Entity("spending")
 export class SpendingEntity {
     @PrimaryGeneratedColumn()
     id: string
 
     @Column()
     @IsNotEmpty()
-    spending: number
+    amount: number
+
+    @IsNotEmpty()
+    @Column()
+    title: string;
+
+    @IsNotEmpty()
+    @Column()
+    slug: string;
 
     @Column()
     description: string

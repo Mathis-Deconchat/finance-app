@@ -27,6 +27,7 @@ import { ConfigService } from '@nestjs/config';
     PassportModule,
   ],
   providers: [AuthService, UsersService, LocalStrategy, JwtStrategy],
-  controllers: [AuthController]
+  controllers: [AuthController],
+
 })
 export class AuthModule { }

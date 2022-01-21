@@ -1,7 +1,8 @@
-import { Body, Controller, Delete, Get, Param, Put, Request, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, Request, UseGuards } from '@nestjs/common';
 import { request } from 'http';
 import { DeleteResult } from 'typeorm';
 import { JwtGuard } from '../auth/jwt.guard';
+import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserEntity } from './users.entity';
 
@@ -26,6 +27,11 @@ export class UsersController {
     @UseGuards(JwtGuard)
     async updateUser(@Request() req, @Body() userData: UpdateUserDto): Promise<UserEntity> {
         return this.userService.update(req.user.id, userData);
+    }
+
+    @Post()
+    async createUser(@Body() createUserDto: CreateUserDto) {
+        return this.userService.createUser(createUserDto)
     }
 
     @Delete()
